@@ -7,10 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #008776;
-            --primary-dark: #005f53;
-            --accent: #f1c40f;
-            --text-dark: #1a1a1a;
+            /* Nueva Paleta: Púrpura y Naranja */
+            --primary: #6d28d9; /* Púrpura vibrante */
+            --primary-dark: #4c1d95; /* Púrpura oscuro */
+            --accent: #f97316; /* Naranja dinámico */
+            --accent-hover: #ea580c; 
+            --text-dark: #1e293b;
             --text-light: #ffffff;
             --bg-light: #f8fafc;
             --white: #ffffff;
@@ -34,8 +36,14 @@
 
         /* --- Animaciones --- */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseAccent {
+            0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(249, 115, 22, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
         }
 
         @keyframes pulseWhatsApp {
@@ -44,10 +52,16 @@
             100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
 
+        @keyframes floatCard {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.9s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
         }
 
         .reveal.active {
@@ -58,52 +72,73 @@
         /* --- Hero Section --- */
         .hero {
             height: 85vh;
-            background: linear-gradient(135deg, rgba(0, 135, 118, 0.88) 0%, rgba(0, 40, 35, 0.96) 100%),
-                        url('https://images.unsplash.com/photo-1516515429572-11183149021a?auto=format&fit=crop&q=80&w=1500');
+            /* Degradado púrpura + Imagen de Drive adaptada */
+            background: linear-gradient(135deg, rgba(76, 29, 149, 0.85) 0%, rgba(109, 40, 217, 0.92) 100%),
+                        url('https://drive.google.com/uc?export=view&id=1N8C68RtB17e_RlGTer7tq7qJ11X0tMsQ');
             background-size: cover;
-            background-position: center;
+            background-position: center top;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--white);
             padding: 0 20px;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--bg-light), transparent);
+            z-index: 1;
+        }
+
+        .hero-content {
+            z-index: 2;
         }
 
         .hero-content h1 {
-            font-size: clamp(2.2rem, 5vw, 3.8rem);
-            font-weight: 700;
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 800;
             margin-bottom: 20px;
             letter-spacing: -1px;
-            animation: fadeInUp 0.8s ease-out;
+            animation: fadeInUp 0.8s ease-out forwards;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
         }
 
         .hero-content p {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             max-width: 650px;
             margin: 0 auto 40px;
-            opacity: 0.95;
-            animation: fadeInUp 1s ease-out;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
         }
 
         .btn-primary {
             background-color: var(--accent);
-            color: var(--text-dark);
+            color: var(--white);
             padding: 18px 45px;
-            border-radius: 12px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
             display: inline-block;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+            animation: pulseAccent 2.5s infinite;
+            opacity: 0;
+            animation: pulseAccent 2.5s infinite, fadeInUp 1s ease-out 0.6s forwards;
         }
 
         .btn-primary:hover {
-            transform: translateY(-4px);
-            background-color: #e2b80d;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            transform: translateY(-5px);
+            background-color: var(--accent-hover);
+            box-shadow: 0 15px 35px rgba(249, 115, 22, 0.5);
         }
 
         /* --- Features Section --- */
@@ -111,6 +146,8 @@
             padding: 100px 20px;
             max-width: 1100px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         .section-title {
@@ -119,9 +156,10 @@
         }
 
         .section-title h2 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: var(--primary);
             margin-bottom: 15px;
+            font-weight: 800;
         }
 
         .feature-grid {
@@ -135,33 +173,41 @@
             padding: 50px 30px;
             border-radius: 24px;
             text-align: center;
-            transition: all 0.5s ease;
-            border: 1px solid rgba(0,0,0,0.03);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(109, 40, 217, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            border-top: 5px solid var(--accent);
         }
 
         .feature-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(109, 40, 217, 0.15);
+            animation: floatCard 3s ease-in-out infinite;
         }
 
         .feature-card svg {
-            width: 55px;
-            height: 55px;
+            width: 60px;
+            height: 60px;
             fill: var(--primary);
             margin-bottom: 30px;
+            transition: fill 0.3s;
+        }
+
+        .feature-card:hover svg {
+            fill: var(--accent);
         }
 
         .feature-card h3 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 15px;
             color: var(--primary-dark);
+            font-weight: 700;
         }
 
-        /* --- Form Section (Glassmorphism) --- */
+        /* --- Form Section --- */
         .contact-section {
-            background: linear-gradient(to bottom, var(--bg-light), #e2e8f0);
-            padding: 120px 20px;
+            background: linear-gradient(180deg, var(--bg-light) 0%, #e2e8f0 100%);
+            padding: 80px 20px 120px;
             display: flex;
             justify-content: center;
         }
@@ -173,8 +219,8 @@
             backdrop-filter: blur(15px);
             padding: 60px;
             border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 30px 60px rgba(109, 40, 217, 0.1);
         }
 
         .form-card h2 {
@@ -182,6 +228,7 @@
             font-size: 2rem;
             margin-bottom: 40px;
             color: var(--primary-dark);
+            font-weight: 800;
         }
 
         .form-group {
@@ -192,14 +239,13 @@
             display: block;
             margin-bottom: 10px;
             font-weight: 600;
-            font-size: 0.95rem;
             color: #4a5568;
         }
 
         .form-group input {
             width: 100%;
             padding: 16px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #cbd5e1;
             border-radius: 14px;
             font-family: inherit;
             font-size: 1rem;
@@ -210,7 +256,7 @@
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(0, 135, 118, 0.1);
+            box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.15);
         }
 
         .location-wrapper {
@@ -234,7 +280,7 @@
 
         .btn-location:hover {
             background: var(--primary-dark);
-            transform: scale(1.03);
+            transform: scale(1.05);
         }
 
         .btn-whatsapp {
@@ -257,8 +303,8 @@
 
         .btn-whatsapp:hover {
             background-color: #128c7e;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
         }
 
         .location-status {
@@ -268,12 +314,80 @@
             font-weight: 500;
         }
 
+        /* --- Footer Ampliado con Redes Sociales --- */
         footer {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            padding: 60px 20px 30px;
             text-align: center;
-            padding: 50px;
+            border-top: 5px solid var(--accent);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .contact-item svg {
+            fill: var(--accent);
+            width: 24px;
+            height: 24px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-btn {
+            background: rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn svg {
+            fill: white;
+            width: 24px;
+            height: 24px;
+            transition: fill 0.3s;
+        }
+
+        .social-btn:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.4);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
             font-size: 0.9rem;
-            color: #718096;
-            background: var(--white);
+            opacity: 0.7;
         }
 
         /* --- Responsive --- */
@@ -281,7 +395,7 @@
             .form-card { padding: 40px 25px; }
             .location-wrapper { flex-direction: column; }
             .btn-location { padding: 16px; justify-content: center; }
-            .hero-content h1 { font-size: 2.2rem; }
+            .contact-info { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
@@ -308,13 +422,13 @@
                 <p>No se quede a pie. Cubrimos los costos de movilidad alternativa mientras recupera su vehículo.</p>
             </div>
 
-            <div class="feature-card reveal">
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg>
                 <h3>Atención Médica</h3>
                 <p>Reclamamos el costo total de terapias, especialistas y medicamentos derivados del siniestro.</p>
             </div>
 
-            <div class="feature-card reveal">
+            <div class="feature-card reveal" style="transition-delay: 0.4s;">
                 <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
                 <h3>Sustento Económico</h3>
                 <p>Si el accidente afectó su capacidad de trabajar, nos aseguramos de que sus ingresos no se detengan.</p>
@@ -352,12 +466,36 @@
     </section>
 
     <footer>
-        <p>© 2026 Publicidad Profesional | Red 1-800-NO-FAULT | Derechos Reservados</p>
+        <div class="footer-content">
+            <h2 style="font-weight: 800; font-size: 1.5rem;">Comuníquese Directamente</h2>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Dianavargas2019@gmail.com
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    (347) 962-8529
+                </div>
+            </div>
+
+            <div class="social-icons">
+                <a href="https://www.facebook.com/share/18mzvdgz86/?mibextid=wwXIfr" target="_blank" class="social-btn" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/leidyluniow_accidente?igsh=MTVyMTN2MXc0OWtxbw%3D%3D&utm_source=qr" target="_blank" class="social-btn" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                </a>
+            </div>
+
+            <p class="copyright">© 2026 Publicidad Profesional | Red 1-800-NO-FAULT | Derechos Reservados</p>
+        </div>
     </footer>
 
     <script>
         // Animaciones Scroll Reveal
-        const observerOptions = { threshold: 0.1 };
+        const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
